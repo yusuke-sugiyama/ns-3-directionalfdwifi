@@ -49,7 +49,7 @@ WifiSwitchedBeamAntennaModel::GetTypeId ()
                    MakeDoubleChecker<double> ())
     .AddAttribute ("InsideGain",
                    "The gain inside the radiation pattern (dbm)",
-                   DoubleValue (3),
+                   DoubleValue (0),
                    MakeDoubleAccessor (
                         &WifiSwitchedBeamAntennaModel::SetGainInsidePattern, 
                         &WifiSwitchedBeamAntennaModel::GetGainInsidePattern),
