@@ -747,7 +747,10 @@ InterferenceHelper::CalculatePerPayload (Ptr<const InterferenceHelper::Event> ev
   NiChanges::iterator j = ni->begin ();
   Time previous = (*j).GetTime ();
   WifiMode payloadMode = event->GetPayloadMode ();
-  Time busytoneDuration = MicroSeconds (WifiPhy::GetPayloadDurationMicroSeconds (busytoneSize, event->GetTxVector()));
+  Time busytoneDuration = Seconds(0);
+  if (busytoneSize != 0){
+    busytoneDuration = MicroSeconds (WifiPhy::GetPayloadDurationMicroSeconds (busytoneSize, event->GetTxVector()));
+  }
   NS_LOG_DEBUG("busytoneSize" << busytoneSize << " duraiton " << busytoneDuration);
 
   double powerW = event->GetRxPowerW ();
