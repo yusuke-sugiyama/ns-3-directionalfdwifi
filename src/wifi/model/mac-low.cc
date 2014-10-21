@@ -36,7 +36,7 @@
 #include "mac-low.h"
 #include "wifi-phy.h"
 #include "wifi-mac-trailer.h"
-#include "surround-node-table.h"
+#include "surrounding-node-table.h"
 #include "busytone-tag.h"
 #include "secondary-tag.h"
 #include "source-tag.h"
@@ -322,7 +322,7 @@ MacLow::MacLow ()
   m_lastNavDuration = Seconds (0);
   m_lastNavStart = Seconds (0);
   m_promisc = false;
-  m_surroundNodeTable = CreateObject<SurroundNodeTable> ();
+  m_surroundingNodeTable = CreateObject<SurroundingNodeTable> ();
 }
 
 MacLow::~MacLow ()
@@ -457,10 +457,10 @@ MacLow::GetDcaTxop ()
   return m_dcaTxop;
 }
 
-Ptr<SurroundNodeTable>
-MacLow::GetSurroundNodeTable()
+Ptr<SurroundingNodeTable>
+MacLow::GetSurroundingNodeTable()
 {
-  return m_surroundNodeTable;
+  return m_surroundingNodeTable;
 }
 
 void
@@ -754,7 +754,7 @@ MacLow::ReceiveOk (Ptr<Packet> packet, double rxSnr, WifiMode txMode, WifiPreamb
   SourceTag sourceTag;
   packet->RemovePacketTag (sourceTag);
 
-  // update surround node table
+  // update surrounding node table
   Mac48Address addr1 = hdr.GetAddr1();
   Mac48Address addr2 = hdr.GetAddr2();
   static Mac48Address networkAddress = Mac48Address ("00:00:00:00:00:00");
@@ -768,7 +768,7 @@ MacLow::ReceiveOk (Ptr<Packet> packet, double rxSnr, WifiMode txMode, WifiPreamb
         {
           nextHop = false;
         }
-      GetSurroundNodeTable()->UpdateTable(addr2, nextHop, hasFrames);
+      GetSurroundingNodeTable()->UpdateTable(addr2, nextHop, hasFrames);
       NS_LOG_INFO(this << "nextHop=" << nextHop << " hasFrames=" << hasFrames);
     }
   
@@ -858,7 +858,7 @@ MacLow::ReceiveOk (Ptr<Packet> packet, double rxSnr, WifiMode txMode, WifiPreamb
         {
           bool hasFrames = hdr.IsMoreData();
           bool nextHop = true;
-          GetSurroundNodeTable()->UpdateTable(m_destinationAddress, nextHop, hasFrames);
+          GetSurroundingNodeTable()->UpdateTable(m_destinationAddress, nextHop, hasFrames);
           NS_LOG_INFO(this << "receive ACK nextHop=" << nextHop << " hasFrames=" << hasFrames);
           m_listener->GotAck (rxSnr, txMode);
         }
@@ -1839,7 +1839,7 @@ MacLow::SendDataPacket (void)
     }
 
   /* [add] 20140612 Address4, More Dataの変更  */
-  Mac48Address addr4 = m_surroundNodeTable->SelectSecondaryTransmissionNode();
+  Mac48Address addr4 = m_surroundingNodeTable->SelectSecondaryTransmissionNode();
 
   if(m_currentHdr.GetType () == WIFI_MAC_DATA)
     {

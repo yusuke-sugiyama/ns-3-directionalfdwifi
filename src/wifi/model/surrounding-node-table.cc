@@ -20,38 +20,38 @@
 
 #include <vector>
 #include "ns3/log.h"
-#include "surround-node-table.h"
+#include "surrounding-node-table.h"
 #include "ns3/random-variable-stream.h"
 #include "ns3/mac48-address.h"
 #include "ns3/double.h"
 
-// NS_OBJECT_ENSURE_REGISTERED (SurroundNodeTable);
-NS_LOG_COMPONENT_DEFINE ("SurroundNodeTable");
+// NS_OBJECT_ENSURE_REGISTERED (SurroundingNodeTable);
+NS_LOG_COMPONENT_DEFINE ("SurroundingNodeTable");
 
 namespace ns3 {
 
 TypeId
-SurroundNodeTable::GetTypeId (void)
+SurroundingNodeTable::GetTypeId (void)
 {
-  static TypeId tid = TypeId ("SurroundNodeTable")
+  static TypeId tid = TypeId ("SurroundingNodeTable")
     .SetParent<Object> ()
-    .AddConstructor<SurroundNodeTable> ()
+    .AddConstructor<SurroundingNodeTable> ()
     ;
   return tid;
 }
 
-SurroundNodeTable::SurroundNodeTable ()
+SurroundingNodeTable::SurroundingNodeTable ()
 {
   m_random = CreateObject<UniformRandomVariable> ();
 }
 
-SurroundNodeTable::~SurroundNodeTable ()
+SurroundingNodeTable::~SurroundingNodeTable ()
 {
   InitItem();
 }
 
 Mac48Address
-SurroundNodeTable::SelectSecondaryTransmissionNode()
+SurroundingNodeTable::SelectSecondaryTransmissionNode()
 {
   NS_LOG_FUNCTION(this);
   std::vector<uint32_t> ItemPriorities[4];
@@ -94,7 +94,7 @@ SurroundNodeTable::SelectSecondaryTransmissionNode()
   return addr.GetBroadcast();
 }
 uint32_t
-SurroundNodeTable::GetRandom(double min, double max)
+SurroundingNodeTable::GetRandom(double min, double max)
 {
   if(min >= max)
     {
@@ -110,19 +110,19 @@ SurroundNodeTable::GetRandom(double min, double max)
 }
   
 void
-SurroundNodeTable::AddItem(Mac48Address address, bool nextHop, bool hasFrames)
+SurroundingNodeTable::AddItem(Mac48Address address, bool nextHop, bool hasFrames)
 {
   NS_LOG_FUNCTION(this << address << nextHop << hasFrames);
-  Items.push_back(new SurroundNodeItem(address, nextHop, hasFrames));
+  Items.push_back(new SurroundingNodeItem(address, nextHop, hasFrames));
 }
   
 void
-SurroundNodeTable::InitItem()
+SurroundingNodeTable::InitItem()
 {
   Items.clear();
 }
 bool
-SurroundNodeTable::IsExistsAddress(Mac48Address address)
+SurroundingNodeTable::IsExistsAddress(Mac48Address address)
 {
   NS_LOG_FUNCTION(this);
   for(unsigned int i = 0; i < Items.size(); i++)
@@ -137,7 +137,7 @@ SurroundNodeTable::IsExistsAddress(Mac48Address address)
 }
   
 void
-SurroundNodeTable::UpdateNextHop(Mac48Address address, bool nextHop)
+SurroundingNodeTable::UpdateNextHop(Mac48Address address, bool nextHop)
 {
   NS_LOG_FUNCTION(this);
   for(uint32_t i = 0; i < Items.size(); i++)
@@ -150,7 +150,7 @@ SurroundNodeTable::UpdateNextHop(Mac48Address address, bool nextHop)
 }
   
 void
-SurroundNodeTable::UpdateHasFrames(Mac48Address address, bool hasFrames)
+SurroundingNodeTable::UpdateHasFrames(Mac48Address address, bool hasFrames)
 {
   NS_LOG_FUNCTION(this);
   for(unsigned int i = 0; i < Items.size(); i++)
@@ -163,7 +163,7 @@ SurroundNodeTable::UpdateHasFrames(Mac48Address address, bool hasFrames)
 }
 
 void
-SurroundNodeTable::UpdateTable(Mac48Address address, bool nextHop, bool hasFrames)
+SurroundingNodeTable::UpdateTable(Mac48Address address, bool nextHop, bool hasFrames)
 {
 
   NS_LOG_FUNCTION(this << address << nextHop << hasFrames);
@@ -179,7 +179,7 @@ SurroundNodeTable::UpdateTable(Mac48Address address, bool nextHop, bool hasFrame
 }
 
 void
-SurroundNodeTable::DeleteItemByAddress(Mac48Address address)
+SurroundingNodeTable::DeleteItemByAddress(Mac48Address address)
 {
 
   NS_LOG_FUNCTION(this << address);
@@ -196,51 +196,51 @@ SurroundNodeTable::DeleteItemByAddress(Mac48Address address)
     }
 }
   
-SurroundNodeItem::SurroundNodeItem (Mac48Address address, bool nextHop, bool hasFrames)
+SurroundingNodeItem::SurroundingNodeItem (Mac48Address address, bool nextHop, bool hasFrames)
 {
   m_address = address;
   m_nextHop = nextHop;
   m_hasFrames = hasFrames;
 }
 
-SurroundNodeItem::~SurroundNodeItem ()
+SurroundingNodeItem::~SurroundingNodeItem ()
 {
 }
 
 Mac48Address
-SurroundNodeItem::GetAddress()
+SurroundingNodeItem::GetAddress()
 {
   return m_address;
 }
 
 bool
-SurroundNodeItem::IsNextHop()
+SurroundingNodeItem::IsNextHop()
 {
   return m_nextHop;
 }
 
 bool
-SurroundNodeItem::IsHasFrames()
+SurroundingNodeItem::IsHasFrames()
 {
   return m_hasFrames;
 }
 
 void
-SurroundNodeItem::SetNextHop(bool nextHop)
+SurroundingNodeItem::SetNextHop(bool nextHop)
 {
   m_nextHop = nextHop;
 }
 
 void
-SurroundNodeItem::SetHasFrames(bool hasFrames)
+SurroundingNodeItem::SetHasFrames(bool hasFrames)
 {
   m_hasFrames = hasFrames;
 }
 
-SurroundNodeItem*
-SurroundNodeItem::Copy ()
+SurroundingNodeItem*
+SurroundingNodeItem::Copy ()
 {
-  return new SurroundNodeItem(GetAddress(), IsNextHop(), IsHasFrames());
+  return new SurroundingNodeItem(GetAddress(), IsNextHop(), IsHasFrames());
 }
   
 } // namespace ns3

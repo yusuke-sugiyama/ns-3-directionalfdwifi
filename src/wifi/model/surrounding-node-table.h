@@ -18,8 +18,8 @@
  * Author: Yusuke Sugiyama <sugiyama@aurum.cs.inf.shizuoka.ac.jp>
  */
 
-#ifndef SURROUND_NODE_TABLE_H
-#define SURROUND_NODE_TABLE_H
+#ifndef SURROUNDING_NODE_TABLE_H
+#define SURROUNDING_NODE_TABLE_H
 
 #include <stdint.h>
 #include <vector>
@@ -29,17 +29,17 @@
 
 namespace ns3 {
 
-class SurroundNodeItem
+class SurroundingNodeItem
 {
 public:
-  ~SurroundNodeItem();
-  SurroundNodeItem (Mac48Address address, bool nextHop, bool hasFrames);
+  ~SurroundingNodeItem();
+  SurroundingNodeItem (Mac48Address address, bool nextHop, bool hasFrames);
   Mac48Address GetAddress (void);
   bool IsNextHop  (void);
   bool IsHasFrames (void);
   void SetNextHop  (bool nextHop);
   void SetHasFrames (bool hasFrames);
-  SurroundNodeItem* Copy ();
+  SurroundingNodeItem* Copy ();
   
 private:
   Mac48Address m_address;
@@ -47,7 +47,7 @@ private:
   bool m_hasFrames;
 };
 
-class SurroundNodeTable : public Object
+class SurroundingNodeTable : public Object
 {
 public:
   static TypeId GetTypeId (void);
@@ -61,8 +61,8 @@ public:
   void UpdateTable(Mac48Address address, bool nextHop, bool hasFrames);
   uint32_t GetRandom(double min, double max);
 
-  SurroundNodeTable();
-  ~SurroundNodeTable();
+  SurroundingNodeTable();
+  ~SurroundingNodeTable();
 private:
   enum PRIORITIES {
     FIRST  = 0,
@@ -70,11 +70,11 @@ private:
     THIRD  = 2,
     FOURTH = 3
   };
-  std::vector<SurroundNodeItem*> Items;
+  std::vector<SurroundingNodeItem*> Items;
   Ptr<UniformRandomVariable> m_random;  //!< Provides uniform random variables.
 };
 
 } // namespace ns3
 
 
-#endif /* SURROUND_NODE_TABLE_H */
+#endif /* SURROUNDING_NODE_TABLE_H */
